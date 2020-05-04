@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import stocks from '../data';
+import stocks from './data';
 import StockTable from './StockTable';
 import Trade from './Trade';
 import SelectedStock from './SelectedStock';
