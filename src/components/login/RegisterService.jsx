@@ -64,16 +64,16 @@ export default class RegisterService extends Component {
 
     switch(name){
       case "firstName":
-        formErrors.firstName = value.length<4? "minimuim 3 characters required" : "";
+        formErrors.firstName = value.length<4? "minimum 3 characters required" : "";
       break;
       case "lastName":
-        formErrors.lastName = value.length<4? "minimuim 3 characters required" : "";
+        formErrors.lastName = value.length<4? "minimum 3 characters required" : "";
       break;
       case "email":
-        formErrors.email = emailRegex.test(value)? "" : "Add an valida email";
+        formErrors.email = emailRegex.test(value)? "" : "Add an valid email";
       break;
       case "password":
-        formErrors.password = value.length<9? "minimuim 8 numbers required" : "";
+        formErrors.password = value.length<9? "minimum 8 numbers required" : "";
       break;
       case "checkbox":
     }
