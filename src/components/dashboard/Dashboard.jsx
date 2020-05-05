@@ -58,7 +58,6 @@ class Dashboard extends Component {
     if(index !== -1) {
       const newPort = [...portfolio]
       newPort[index].quantity = parseInt(newPort[index].quantity) + parseInt(quantity);
-      console.log(newPort[index].quantity)
       this.setState({portfolio: newPort})
     } else {
       this.setState({
@@ -74,7 +73,17 @@ class Dashboard extends Component {
   }
 
   clickToSell = (quantity) => {
-
+    const { portfolio } = this.state;
+    const { code } = this.state.selectedStock;
+    const index = portfolio.findIndex((stock) => stock.code === code);
+    if(index !== -1) {
+      const newPort = [...portfolio]
+      newPort[index].quantity = parseInt(newPort[index].quantity) - parseInt(quantity);
+      if ( newPort[index].quantity < 0 ) {
+        newPort[index].quantity = 0;
+      }
+      this.setState({portfolio: newPort})
+    }
   }
 
   render() {
