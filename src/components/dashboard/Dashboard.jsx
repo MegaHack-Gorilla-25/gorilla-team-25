@@ -73,11 +73,8 @@ class Dashboard extends Component {
         </div>
         <div className="wrapper-dashboard">
           <div className="dashboard-wrapper">
-            <StockTable
-            stocks={stocks}
-            select={this.changeSelected}
-            />
-            <PortfolioTable selected={this.changeSelected} portfolio={portfolio} />
+            <StockTable stocks={stocks} select={this.changeSelected} />
+            <PortfolioTable select={this.changeSelected} portfolio={portfolio} />
           </div>
           <div>
           <SelectedStock selected={selectedStock} />

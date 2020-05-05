@@ -3,7 +3,7 @@ import PortfolioTableLine from './PortfolioTableLine';
 
 class PortfolioTable extends Component {
   render() {
-    const { portfolio, selected } = this.props;
+    const { portfolio, select } = this.props;
     return (
       <div className="scrollbar-portfolio style-3">
         <div className="force-overflow">
@@ -21,7 +21,7 @@ class PortfolioTable extends Component {
             </thead>
             <tbody>
               {portfolio.map((stock) => (
-                <PortfolioTableLine selected={selected} stock={stock} key={stock.name} />
+                <PortfolioTableLine select={select} stock={stock} key={stock.name} />
               ))}
             </tbody>
           </table>

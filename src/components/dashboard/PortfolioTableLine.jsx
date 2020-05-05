@@ -3,9 +3,14 @@ import React, { Component } from 'react';
 class PortfolioTableLine extends Component {
   render() {
     const { quantity, code, paidPrice , name, actualPrice } = this.props.stock;
-    const { selected } = this.props;
+    const { select } = this.props;
+    const stock = {
+      name: name,
+      code: code,
+      actualPrice: actualPrice,
+    }
     return (
-      <tr className="portifolio-table" onClick={() => selected(code)}>
+      <tr className="portifolio-table" onClick={() => select(stock)}>
         <td>{name}</td>
         <td>{code}</td>
         <td>{quantity}</td>
