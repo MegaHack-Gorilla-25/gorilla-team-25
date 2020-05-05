@@ -23,7 +23,7 @@ class Trade extends Component {
     const { quantity, onClickBuy, onClickSell } = this.props;
     const { quantityToBuy, quantityToSell } = this.state;
     return (
-      <div className="display-rigth">
+      <div className="display-right">
         <div>
           <label htmlFor="input">
             <h3>Quantidade</h3>
