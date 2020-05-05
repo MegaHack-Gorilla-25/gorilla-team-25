@@ -52,7 +52,25 @@ class Dashboard extends Component {
   };
 
   clickToBuy = (quantity) => {
-
+    const { portfolio } = this.state;
+    const { code, name, actualPrice } = this.state.selectedStock;
+    const index = portfolio.findIndex((stock) => stock.code === code);
+    if(index !== -1) {
+      const newPort = [...portfolio]
+      newPort[index].quantity = parseInt(quantity) + parseInt(quantity);
+      console.log(newPort[index].quantity)
+      this.setState({portfolio: newPort})
+    } else {
+      this.setState({
+        portfolio: [...portfolio, {
+          quantity: quantity,
+          code: code,
+          paidPrice: actualPrice,
+          name: name,
+          actualPrice: actualPrice,
+        }]
+      })
+    }
   }
 
   clickToSell = (quantity) => {

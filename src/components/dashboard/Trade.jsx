@@ -28,7 +28,7 @@ class Trade extends Component {
           <label htmlFor="input">
             <h3>Quantidade</h3>
             <div className="txtb">
-              <input type="text" onChange={this.onChangeBuy} value={quantity} placeholder="Comprar"/>
+              <input type="number" onChange={this.onChangeBuy} value={quantity} placeholder="Comprar"/>
             </div>
             <button onClick={() => onClickBuy(quantityToBuy)} className="comprar-vender">Comprar</button>
           </label>
@@ -37,7 +37,7 @@ class Trade extends Component {
           <label htmlFor="input">
             <h3>Quantidade</h3>
               <div className="txtb">
-                <input type="text" onChange={this.onChangeSell} value={quantity} placeholder="Vender"/>
+                <input type="number" onChange={this.onChangeSell} value={quantity} placeholder="Vender"/>
               </div>
             <button onClick={() => onClickSell(quantityToSell)} className="comprar-vender">Vender</button>
           </label>
