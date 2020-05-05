@@ -84,8 +84,8 @@ class Dashboard extends Component {
     if(index !== -1) {
       const newPort = [...portfolio]
       newPort[index].quantity = parseInt(newPort[index].quantity) - parseInt(quantity);
-      if ( newPort[index].quantity < 0 ) {
-        newPort[index].quantity = 0;
+      if ( newPort[index].quantity <= 0 ) {
+        newPort.splice(index, 1);
       }
       this.setState({
         portfolio: newPort,
