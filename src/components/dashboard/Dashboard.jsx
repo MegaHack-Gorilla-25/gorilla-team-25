@@ -6,6 +6,7 @@ import SelectedStock from './SelectedStock';
 import PortfolioTable from './PortfolioTable';
 import { Redirect } from 'react-router';
 import './dashboard.css';
+import TraderInfo from './TraderInfo';
 
 const initialSelectedStock = {
   name: 'AES Tietê (O)',
@@ -35,7 +36,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       selectedStock: initialSelectedStock,
-      money: 10000,
+      capital: 10000,
       portfolio: initialPortfolio,
       redirect: false
     };
@@ -52,13 +53,16 @@ class Dashboard extends Component {
   };
 
   clickToBuy = (quantity) => {
-    const { portfolio } = this.state;
+    const { portfolio, capital } = this.state;
     const { code, name, actualPrice } = this.state.selectedStock;
     const index = portfolio.findIndex((stock) => stock.code === code);
     if(index !== -1) {
       const newPort = [...portfolio]
       newPort[index].quantity = parseInt(newPort[index].quantity) + parseInt(quantity);
-      this.setState({portfolio: newPort})
+      this.setState({
+        portfolio: newPort,
+        capital: capital - (quantity * actualPrice),
+      })
     } else {
       this.setState({
         portfolio: [...portfolio, {
@@ -67,14 +71,15 @@ class Dashboard extends Component {
           paidPrice: actualPrice,
           name: name,
           actualPrice: actualPrice,
-        }]
+        }],
+        capital: capital - (quantity * actualPrice),
       })
     }
   }
 
   clickToSell = (quantity) => {
-    const { portfolio } = this.state;
-    const { code } = this.state.selectedStock;
+    const { portfolio, capital } = this.state;
+    const { code, actualPrice } = this.state.selectedStock;
     const index = portfolio.findIndex((stock) => stock.code === code);
     if(index !== -1) {
       const newPort = [...portfolio]
@@ -82,7 +87,10 @@ class Dashboard extends Component {
       if ( newPort[index].quantity < 0 ) {
         newPort[index].quantity = 0;
       }
-      this.setState({portfolio: newPort})
+      this.setState({
+        portfolio: newPort,
+        capital: capital + (quantity * actualPrice),
+      })
     }
   }
 
@@ -90,13 +98,13 @@ class Dashboard extends Component {
     if (this.state.redirect) {
       return <Redirect to="/" />;
     }
-    const { money, portfolio, selectedStock } = this.state;
+    const { capital, portfolio, selectedStock } = this.state;
     return (
       <div className="dashboard">
         <button className="btn-dashboard" onClick={this.handleOnClick}>log out</button>
         <div className="trader-info">
           <h1>{this.props.match.params.firstName} {this.props.match.params.lastName}</h1>
-          <p>Capital: R${money}</p>
+          <TraderInfo capital={capital} />
         </div>
         <div className="wrapper-dashboard">
           <div className="dashboard-wrapper">
