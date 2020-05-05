@@ -4,6 +4,10 @@
   margin: auto;
 } */
 
+.portifolio-table {
+  cursor: pointer;
+}
+
 .scrollbar-stock-list {
   margin: 25px 30px;
   float: left;

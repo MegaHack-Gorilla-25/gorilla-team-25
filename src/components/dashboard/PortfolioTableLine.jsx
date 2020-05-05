@@ -5,7 +5,7 @@ class PortfolioTableLine extends Component {
     const { quantity, code, buyPrice , name, price } = this.props.stock;
     const {  onSelectedToSell } = this.props;
     return (
-      <tr onClick={() => onSelectedToSell(code)}>
+      <tr className="portifolio-table" onClick={() => onSelectedToSell(code)}>
         <td>{name}</td>
         <td>{code}</td>
         <td>{quantity}</td>

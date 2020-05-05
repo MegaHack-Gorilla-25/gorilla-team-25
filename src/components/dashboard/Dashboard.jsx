@@ -54,32 +54,33 @@ class Dashboard extends Component {
   };
 
   clickToBuy = (quantityBought) => {
-    const { portfolio, selectedStock } = this.state;
+    let { portfolio, selectedStock } = this.state;
+    const newPortfolio = portfolio;
     const arrSelectedToBuy = portfolio.find((e) => e.code === selectedStock.code);
     const index = portfolio.findIndex((e) => e.code === selectedStock.code);
-    if(arrSelectedToBuy) {
-      this.setState((state) => { state.portfolio[index].quantity +=  Number(quantityBought) / 2 })
+    if (arrSelectedToBuy) {
+      newPortfolio[index].quantity +=  Number(quantityBought);
+      this.setState({ portfolio: newPortfolio });
     } else {
       const quantity = {quantity: Number(quantityBought)};
-      const obj = Object.assign(selectedStock, quantity);
-      const arrobj = [...portfolio, obj];
-      this.setState({ [portfolio]: [arrobj], })
-      console.log(this.state.portfolio)
-      
+      const obj = Object.assign({}, quantity, selectedStock);
+      const port = [...newPortfolio, obj]
+      console.log(port);
+      this.setState({ portfolio: port });
     }
   }
 
   clickToSell = (quantity) => {
-    const arrSelectedToSell = this.state.portfolio.find((e) => e.code === this.state.selectedStockSell);
-    const index = this.state.portfolio.findIndex((e) => e.code === this.state.selectedStockSell);
-    console.log(index);
+    const { portfolio, selectedStockSell } = this.state;
+    const newPortfolio = portfolio;
+    const arrSelectedToSell = portfolio.find((e) => e.code === selectedStockSell);
+    const index = portfolio.findIndex((e) => e.code === selectedStockSell);
     if (quantity > arrSelectedToSell.quantity){
       alert('Você não pode vender isso tudo!');
     }
-    else if (quantity < arrSelectedToSell.quantity) {
-      this.setState((state) =>  state.portfolio[index].quantity -= quantity / 2)
-      console.log()
-      // this.state.portfolio[index] = arrSelectedToSell.quantity - quantity
+    else if (quantity <= arrSelectedToSell.quantity) {
+      newPortfolio[index].quantity -= quantity;
+      this.setState({ portfolio: newPortfolio });
     }
 
   }
