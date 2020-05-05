@@ -57,7 +57,7 @@ class Dashboard extends Component {
     const index = portfolio.findIndex((stock) => stock.code === code);
     if(index !== -1) {
       const newPort = [...portfolio]
-      newPort[index].quantity = parseInt(quantity) + parseInt(quantity);
+      newPort[index].quantity = parseInt(newPort[index].quantity) + parseInt(quantity);
       console.log(newPort[index].quantity)
       this.setState({portfolio: newPort})
     } else {
