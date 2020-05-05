@@ -20,7 +20,7 @@ class Trade extends Component {
   }
 
   render() {
-    const { quantity, onClickBuy, onClickSell, selectedStock } = this.props;
+    const { quantity, onClickBuy, onClickSell } = this.props;
     const { quantityToBuy, quantityToSell } = this.state;
     return (
       <div className="display-rigth">
@@ -30,7 +30,7 @@ class Trade extends Component {
             <div className="txtb">
               <input type="text" onChange={this.onChangeBuy} value={quantity} placeholder="Comprar"/>
             </div>
-            <button onClick={() => onClickBuy(selectedStock, quantityToBuy)} className="comprar-vender">Comprar</button>
+            <button onClick={() => onClickBuy(quantityToBuy)} className="comprar-vender">Comprar</button>
           </label>
         </div>
         <div>

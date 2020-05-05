@@ -53,12 +53,20 @@ class Dashboard extends Component {
     this.setState({ selectedStock: stock });
   };
 
-  clickToBuy = (selectedStock, quantityBought) => {
-    const { portfolio } = this.state;
-    const quantity = {quantity: quantityBought}
-    const obj = Object.assign(selectedStock, quantity)
-    console.log(selectedStock)
-    this.setState({ portfolio: [...portfolio, obj] })
+  clickToBuy = (quantityBought) => {
+    const { portfolio, selectedStock } = this.state;
+    const arrSelectedToBuy = portfolio.find((e) => e.code === selectedStock.code);
+    const index = portfolio.findIndex((e) => e.code === selectedStock.code);
+    if(arrSelectedToBuy) {
+      this.setState((state) => { state.portfolio[index].quantity +=  Number(quantityBought) / 2 })
+    } else {
+      const quantity = {quantity: Number(quantityBought)};
+      const obj = Object.assign(selectedStock, quantity);
+      const arrobj = [...portfolio, obj];
+      this.setState({ [portfolio]: [arrobj], })
+      console.log(this.state.portfolio)
+      
+    }
   }
 
   clickToSell = (quantity) => {
@@ -69,7 +77,7 @@ class Dashboard extends Component {
       alert('Você não pode vender isso tudo!');
     }
     else if (quantity < arrSelectedToSell.quantity) {
-      this.setState((state) => { state.portfolio[index].quantity = state.portfolio[index].quantity - quantity })
+      this.setState((state) =>  state.portfolio[index].quantity -= quantity / 2)
       console.log()
       // this.state.portfolio[index] = arrSelectedToSell.quantity - quantity
     }
@@ -98,7 +106,7 @@ class Dashboard extends Component {
             stocks={stocks}
             select={this.changeSelected}
             />
-            <PortfolioTable portfolio={initialPortfolio} />
+            <PortfolioTable onSelectedToSell={this.onSelectedToSell} portfolio={initialPortfolio} />
           </div>
           <Trade selectedStock={selectedStock} onClickSell={this.clickToSell} onClickBuy={this.clickToBuy} />
           <SelectedStock selected={selectedStock} />
