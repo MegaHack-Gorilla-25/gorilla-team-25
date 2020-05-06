@@ -6,27 +6,28 @@ import SelectedStock from './SelectedStock';
 import PortfolioTable from './PortfolioTable';
 import { Redirect } from 'react-router';
 import './dashboard.css';
+import TraderInfo from './TraderInfo';
 
 const initialSelectedStock = {
   name: 'AES Tietê (O)',
-  symbol: 'AESAY',
-  price: '10',
+  code: 'AESAY',
+  actualPrice: '10',
 };
 
 const initialPortfolio = [
    {
     quantity: 100,
     code: 'AESAY',
-    buyPrice: 8,
+    paidPrice: 8,
     name: 'AES Tietê (O)',
-    price: 10,
+    actualPrice: 10,
   },
   {
     quantity: 300,
     code: 'BAK',
-    buyPrice: 5,
+    paidPrice: 5,
     name: 'Braskem (P)',
-    price: 10,
+    actualPrice: 10,
   },
 ];
 
@@ -34,15 +35,13 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedStock: '',
-      selectedStockSell: '',
-      money: 10000,
+      selectedStock: initialSelectedStock,
+      capital: 10000,
       portfolio: initialPortfolio,
       redirect: false
     };
     this.clickToBuy = this.clickToBuy.bind(this);
     this.clickToSell = this.clickToSell.bind(this);
-    this.onSelectedToSell = this.onSelectedToSell.bind(this);
   }
 
   handleOnClick = () => {
@@ -53,64 +52,69 @@ class Dashboard extends Component {
     this.setState({ selectedStock: stock });
   };
 
-  clickToBuy = (quantityBought) => {
-    let { portfolio, selectedStock } = this.state;
-    const newPortfolio = portfolio;
-    const arrSelectedToBuy = portfolio.find((e) => e.code === selectedStock.code);
-    const index = portfolio.findIndex((e) => e.code === selectedStock.code);
-    if (arrSelectedToBuy) {
-      newPortfolio[index].quantity +=  Number(quantityBought);
-      this.setState({ portfolio: newPortfolio });
+  clickToBuy = (quantity) => {
+    const { portfolio, capital } = this.state;
+    const { code, name, actualPrice } = this.state.selectedStock;
+    const index = portfolio.findIndex((stock) => stock.code === code);
+    if(index !== -1) {
+      const newPort = [...portfolio]
+      newPort[index].quantity = parseInt(newPort[index].quantity) + parseInt(quantity);
+      this.setState({
+        portfolio: newPort,
+        capital: capital - (quantity * actualPrice),
+      })
     } else {
-      const quantity = {quantity: Number(quantityBought)};
-      const obj = Object.assign({}, quantity, selectedStock);
-      const port = [...newPortfolio, obj]
-      console.log(port);
-      this.setState({ portfolio: port });
+      this.setState({
+        portfolio: [...portfolio, {
+          quantity: quantity,
+          code: code,
+          paidPrice: actualPrice,
+          name: name,
+          actualPrice: actualPrice,
+        }],
+        capital: capital - (quantity * actualPrice),
+      })
     }
   }
 
   clickToSell = (quantity) => {
-    const { portfolio, selectedStockSell } = this.state;
-    const newPortfolio = portfolio;
-    const arrSelectedToSell = portfolio.find((e) => e.code === selectedStockSell);
-    const index = portfolio.findIndex((e) => e.code === selectedStockSell);
-    if (quantity > arrSelectedToSell.quantity){
-      alert('Você não pode vender isso tudo!');
+    const { portfolio, capital } = this.state;
+    const { code, actualPrice } = this.state.selectedStock;
+    const index = portfolio.findIndex((stock) => stock.code === code);
+    if(index !== -1) {
+      const newPort = [...portfolio]
+      newPort[index].quantity = parseInt(newPort[index].quantity) - parseInt(quantity);
+      if ( newPort[index].quantity <= 0 ) {
+        newPort.splice(index, 1);
+      }
+      this.setState({
+        portfolio: newPort,
+        capital: capital + (quantity * actualPrice),
+      })
     }
-    else if (quantity <= arrSelectedToSell.quantity) {
-      newPortfolio[index].quantity -= quantity;
-      this.setState({ portfolio: newPortfolio });
-    }
-
-  }
-
-  onSelectedToSell = (code) => {
-    this.setState({ selectedStockSell: code })
   }
 
   render() {
     if (this.state.redirect) {
-      return <Redirect push to="/" />;
+      return <Redirect to="/" />;
     }
-    const { money, portfolio, selectedStock } = this.state;
+    const { capital, portfolio, selectedStock } = this.state;
     return (
       <div className="dashboard">
         <button className="btn-dashboard" onClick={this.handleOnClick}>log out</button>
         <div className="trader-info">
           <h1>{this.props.match.params.firstName} {this.props.match.params.lastName}</h1>
-          <p>Capital: R${this.state.money}</p>
+          <TraderInfo capital={capital} />
         </div>
         <div className="wrapper-dashboard">
           <div className="dashboard-wrapper">
-            <StockTable
-            stocks={stocks}
-            select={this.changeSelected}
-            />
-            <PortfolioTable onSelectedToSell={this.onSelectedToSell} portfolio={initialPortfolio} />
+            <StockTable stocks={stocks} select={this.changeSelected} />
+            <PortfolioTable select={this.changeSelected} portfolio={portfolio} />
           </div>
-          <Trade selectedStock={selectedStock} onClickSell={this.clickToSell} onClickBuy={this.clickToBuy} />
+          <div>
           <SelectedStock selected={selectedStock} />
+          <Trade selectedStock={selectedStock} onClickSell={this.clickToSell} onClickBuy={this.clickToBuy} />
+          </div>
         </div>
       </div>
     );

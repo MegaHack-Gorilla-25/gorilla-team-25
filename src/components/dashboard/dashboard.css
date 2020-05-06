@@ -45,22 +45,27 @@
   background-size: 100%;
 }
 
-.display-rigth{
-  margin-top: 30px;
-  margin-right: 50px;
-  float: right;
+.display-right {
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  width: 300px;
+  right: 42%;
+  top: 23%;
+  position: absolute;
+  box-shadow: 0px 10px 100px #111;
 }
 
-.display-left{
-  margin-left: 50px;
-  float: left;
-  display: flex;
-  flex-direction: column;
-  padding: 0px 40px;
-  border-radius: 10px;
+.display-left {
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  width: 300px;
+  height: 120px;
+  right: 42%;
+  top: 7%;
+  position: absolute;
   box-shadow: 0px 10px 100px #111;
-  background-image: linear-gradient(to right, #32be8f, #38d39f, #476A6F);
-  background-size: 100%;
 }
 
 .acaorelative{
